@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+
+        document.querySelector('#flip').addEventListener('click', function(){
+            // ***new solution*** Use AJAX call to get the result of the flipped coin
+            // https://www.w3schools.com/jquery/jquery_ajax_get_post.asp
+            let amount = document.querySelector('#amount').value;
+            let name = document.querySelector('#name').value;
+
+            if (name == null)
+            {
+                name = 'something';
+            }
+
+            // Make AJAX call
+            $.post('/flip',
+            {
+                'amount': amount,
+                'name': name
+            },
+            function(result){
+                document.querySelector('#status').innerHTML = result.concat(' is paying $', amount, ' for ', name);
+            });
+
+        });
+
+    });
+</script>
+{% endblock %}
+
+{% block title %}
+    Transactions
+{% endblock %}
+{% block main %}
+<h1>{{group_name}}</h1>
+
+<div class="form-group mt-3">
+    <input autocomplete="off" autofocus class="form-control" id="amount" placeholder="Amount of money" type="number" min="0">
+</div>
+<div class="form-group">
+    <input autocomplete="off" autofocus class="form-control" id="name" placeholder="Name of expense" type="text">
+</div>
+<button type="button" id="flip" class="btn btn-primary">Flip</button>
+
+
+<h1 class="display-4" id="status"></h1>
+
+
+<h4 class="mt-5">History</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Payer</th>
+            <th>Quantity</th>
+            <th>Name</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction.username }}</td>
+            <td>{{ transaction.quantity | money }}</td>
+            <td>{{ transaction.name }}</td>
+            <td>{{ transaction.time }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<h4 class="mt-5">Lifetime stats</h4>
+<h6>Since
+{% if transactions %}
+    {{ transactions[0]["time"] }}
+{% endif %}
+</h6>
+
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <table class="table w-auto">
+            <thead class="thead-dark">
+                <tr>
+                    <th>User</th>
+                    <th>Contribution</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user, contribution in stats.items() %}
+                <tr>
+                    <td>{{ user }}</td>
+                    <td>{{ contribution | money }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

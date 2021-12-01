@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}
+    Create
+{% endblock %}
+
+{% block main %}
+<form action="/create" method="post">
+    <div class="form-group">
+        <label class="font-weight-bold" for="group_name">Group Name</label>
+        <p><input type="text" class="form-control" id="group_name" autocomplete="off" autofocus name="group_name" placeholder="Example Name" required></p>
+    </div>
+    <div class="form-group" id="usernames">
+        <label class="font-weight-bold" for="username">Group members</label>
+        <p><input autocomplete="off" class="form-control" name="username" id="username" placeholder="Username" type="text"></p>
+    </div>
+    <!-- https://www.bitdegree.org/learn/html-comment-tag-->
+    <button id="add" class="btn btn-secondary" type="button">Add another member</button>
+    <button class="btn btn-primary" type="submit">Create Group</button>
+</form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        document.querySelector('#add').addEventListener('click', function(){
+            // Add a new input field so that the user can add another username
+            var p = document.createElement('p');
+            p.innerHTML = '<input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text" required>';
+            document.querySelector('#usernames').appendChild(p);
+        });
+    });
+
+
+    /*
+    const usernames = [];
+    let i = 0;
+
+    document.querySelector('#add').addEventListener('submit', function(event){
+        let username = document.querySelector('#username');
+        usernames[i] = username;
+        i = i + 1;
+    });
+
+    document.querySelector('#submit').addEventListener('submit', function(event){
+        // Send the list of usernames to the server using an AJAX call. Because idk how to send it using a normal form
+        $.ajax({
+            url: "/your_route",
+            type: "POST",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            data: JSON.stringify({usernames: usernames}),
+            success: function(response) {
+                console.log(response);
+            },
+        });
+    });
+    */
+
+
+</script>
+{% endblock %}
