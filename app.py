@@ -31,7 +31,6 @@ def after_request(response):
 app.jinja_env.filters["money"] = money
 
 # Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -204,7 +203,7 @@ def flip():
 
         # Insert result into the database
         user_id = db.execute("SELECT id FROM users WHERE username = ?", result)[0]["id"]
-        db.execute("INSERT INTO transactions (group_id, payer, quantity, name, time) VALUES (?, ?, ?, ?, datetime('now'))",
+        db.execute("INSERT INTO transactions (group_id, payer, quantity, name) VALUES (?, ?, ?, ?)",
             session["group_info"]["id"], user_id, amount, name)
 
         # Return the results in JSON format
@@ -280,6 +279,9 @@ def login():
 
         # Remember which user logged in
         session["user_id"] = rows[0]["id"]
+        
+        user_id = session.get("user_id")
+        print(f"\n\n{user_id}\n\n")
 
         # Redirect user to home page
         return redirect("/")
