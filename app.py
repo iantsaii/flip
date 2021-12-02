@@ -206,7 +206,7 @@ def flip():
 
         # Insert result into the database
         user_id = db.execute("SELECT id FROM users WHERE username = ?", result)[0]["id"]
-        db.execute("INSERT INTO transactions (group_id, payer, quantity, name, time) VALUES (?, ?, ?, ?, datetime('now'))",
+        db.execute("INSERT INTO transactions (group_id, payer, quantity, name) VALUES (?, ?, ?, ?)",
             session["group_info"]["id"], user_id, amount, name)
 
         # Return the results in JSON format
