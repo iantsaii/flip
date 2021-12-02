@@ -147,6 +147,8 @@ def transactions():
         for member in members:
             list1.append(member["username"])
         members = list1
+        
+        print(f"\n\n{members}\n\n")
 
         # Get group name and size
         group_info = db.execute("SELECT group_name, size FROM groups WHERE id = ?", group_id)
