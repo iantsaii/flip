@@ -101,7 +101,7 @@ def index():
     for group in groups:
 
         # SELECT a list of dictionaries, where each dictionary is a key-value pair of "username":"member's username"
-        members = db.execute("SELECT username from users JOIN membership ON users.id = membership.user_id JOIN groups ON membership.group_id = groups.id WHERE group_name = ?", group["group_name"])
+        members = db.execute("SELECT username from users JOIN membership ON users.id = membership.user_id JOIN groups ON membership.group_id = groups.id WHERE groups.id = ?", group["group_id"])
 
         # For each username in the list
         for i, member in enumerate(members):
