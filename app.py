@@ -186,15 +186,9 @@ def flip():
         # Get size of the group N
         N = session["group_info"]["size"]
 
-        # Determine length of random string to be generated. (using floor division)
-        length = N // 10 + 1
-        if N >= 10:
-            N = 9
-
         # Randomly decide who's going to pay
-        # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
-        result = ''.join(random.choice(string.digits[0:N]) for _ in range(length))
-        result = members[int(result)]
+        result = random.randint(0, N-1)
+        result = members[result]
 
         # Get name of transaction and money associated with it
         # https://www.w3schools.com/jquery/jquery_ajax_get_post.asp
